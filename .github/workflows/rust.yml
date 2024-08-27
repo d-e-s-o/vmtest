@@ -16,7 +16,8 @@ env:
 jobs:
   build-test:
 
-    runs-on: ubuntu-latest
+    # ubuntu-24.04 is the earliest image with a `virtiofsd` package.
+    runs-on: ubuntu-24.04
 
     steps:
     - uses: actions/checkout@v3
@@ -36,7 +37,7 @@ jobs:
       run: |
         sudo apt-get update
         # Virtualization deps
-        sudo apt-get install -y qemu-system-x86-64 qemu-guest-agent qemu-utils ovmf
+        sudo apt-get install -y qemu-system-x86-64 qemu-guest-agent qemu-utils ovmf virtiofsd
 
     - name: Cache test assets
       uses: actions/cache@v3
