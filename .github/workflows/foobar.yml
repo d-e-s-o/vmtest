@@ -1,0 +1,26 @@
+name: Build vmtest
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [
+          x86_64-unknown-linux-musl,
+        ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: taiki-e/setup-cross-toolchain-action@v1
+        with:
+          target: ${{ matrix.target }}
+      - run: |
+          cargo install --path=. --root=. --target ${{ matrix.target }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vmtest-${{ matrix.target }}
+          path: bin/vmtest
